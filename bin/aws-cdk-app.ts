@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
-import { AwsUsersAppStack } from '../lib/aws-users-app-stack';
+import { AwsAppStack } from '../lib/aws-app-stack';
 
 const app = new cdk.App();
-new AwsUsersAppStack(app, 'AwsUsersAppStack');
+new AwsAppStack(app, 'AwsCdkAppStack');
