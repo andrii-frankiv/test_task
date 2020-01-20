@@ -9,7 +9,6 @@ const LAMBDA_CONFIG = {
   handler: 'api-proxy.handler'
 };
 
-
 const
   ROOT_RESOURCE = 'animals',
   ITEM_RESOURCE = '{id}'
@@ -41,49 +40,19 @@ export default class RestApiService extends Construct {
       }
     });
 
+    // INITIALIZE LAMBDA REST API PROXY INTEGRATION
     const service = new LambdaRestApi(this, serviceName, { handler: this.handler, proxy: false });
 
+    // INIT AND CONFIGURE ROOT RESOURCE - (/animals in my case)
     const rootResource = service.root.addResource(ROOT_RESOURCE);
     // list items
     rootResource.addMethod('GET', new LambdaIntegration(this.handler));
     // create new item
     rootResource.addMethod('POST', new LambdaIntegration(this.handler));
 
+    // INIT AND CONFIGURE NESTED RESOURCE - (/animals/#id)
     const itemResource = rootResource.addResource(ITEM_RESOURCE);
-    // itemResource.addMethod('ANY', new LambdaIntegration(this.handler));
     itemResource.addMethod('GET', new LambdaIntegration(this.handler));
     itemResource.addMethod('DELETE', new LambdaIntegration(this.handler));
-
-    // addCorsOptions(itemResource);
   }
 }
-
-
-/*
-function addCorsOptions(apiResource: IResource) {
-  apiResource.addMethod('OPTIONS', new MockIntegration({
-    integrationResponses: [{
-      statusCode: '200',
-      responseParameters: {
-        'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        'method.response.header.Access-Control-Allow-Origin': "'*'",
-        'method.response.header.Access-Control-Allow-Credentials': "'false'",
-        'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE'",
-      },
-    }],
-    passthroughBehavior: PassthroughBehavior.NEVER,
-    requestTemplates: {
-      "application/json": "{\"statusCode\": 200}"
-    },
-  }), {
-    methodResponses: [{
-      statusCode: '200',
-      responseParameters: {
-        'method.response.header.Access-Control-Allow-Headers': true,
-        'method.response.header.Access-Control-Allow-Methods': true,
-        'method.response.header.Access-Control-Allow-Credentials': true,
-        'method.response.header.Access-Control-Allow-Origin': true,
-      },
-    }]
-  })
-}*/

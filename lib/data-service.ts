@@ -10,7 +10,6 @@ const LAMBDA_CONFIG = {
   handler: 'db.handler'
 };
 
-
 const
   KEY = 'ANIMAL_ID',
   TABLE_NAME = 'Animals'
@@ -20,7 +19,6 @@ const TABLE_CONFIG = {
   tableName: TABLE_NAME,
   partitionKey: { name: KEY, type: AttributeType.STRING }
 };
-
 
 interface IUserService {
   readonly serviceHandler: IFunction

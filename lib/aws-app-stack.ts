@@ -19,7 +19,10 @@ export class AwsAppStack extends cdk.Stack {
       s3HandlerName: contentService.serviceHandlerName
     });
 
-    /* apply service permissions */
+    /*
+    * GRANT INVOKING PERMISSIONS TO GATEWAY API SERVICE.
+    * SO GATEWAY API will be able to  call dynamoDB and S3.
+    * */
     [dataService, contentService]
       .forEach(service => service.grantInvokeServiceHandler(gatewayService.handler));
 
