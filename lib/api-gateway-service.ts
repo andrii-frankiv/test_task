@@ -49,17 +49,22 @@ export default class RestApiService extends Construct {
     // create new item
     rootResource.addMethod('POST', new LambdaIntegration(this.handler));
 
-    addCorsOptions(rootResource)
+    rootResource.addCorsPreflight({
+      allowOrigins: [ "*" ]
+    });
+
+    // addCorsOptions(rootResource)
 
 
     const itemResource = rootResource.addResource(ITEM_RESOURCE);
     itemResource.addMethod('ANY', new LambdaIntegration(this.handler));
 
-    addCorsOptions(itemResource);
+    // addCorsOptions(itemResource);
   }
 }
 
 
+/*
 function addCorsOptions(apiResource: IResource) {
   apiResource.addMethod('OPTIONS', new MockIntegration({
     integrationResponses: [{
@@ -86,4 +91,4 @@ function addCorsOptions(apiResource: IResource) {
       },
     }]
   })
-}
+}*/
