@@ -2,7 +2,6 @@ import { IFunction } from '@aws-cdk/aws-lambda';
 import { Construct } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
-import { Table, AttributeType, TableProps } from '@aws-cdk/aws-dynamodb';
 
 
 const LAMBDA_CONFIG = {
@@ -13,9 +12,6 @@ const LAMBDA_CONFIG = {
 
 const BUCKET_NAME = 'Content';
 
-const BUCKET_CONFIG: BucketProps = {
-
-}
 
 interface IAppService {
   readonly serviceHandler: IFunction
