@@ -12,4 +12,5 @@ cdk.out
 .gitignore.swp
 .idea/
 template.yaml
+cdk.context.json
 

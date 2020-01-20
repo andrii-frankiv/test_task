@@ -1,0 +1,9 @@
+{
+  "DB_ACTION": "put",
+  "item": {
+    "ANIMAL_ID": "N2ECLDUVL0KOJ1T7P8FHP",
+    "name": "Panda",
+    "info": "Some text about panda",
+    "img": "-"
+  }
+}

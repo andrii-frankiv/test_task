@@ -1,0 +1,10 @@
+{
+  "DB_ACTION": "update",
+  "Key": {
+    "ANIMAL_ID": "N2ECLDUVL0KOJ1T7P8FHP"
+  },
+  "UpdateExpression": "set img = :img",
+  "ExpressionAttributeValues": {
+    ":img": "url"
+  }
+}
