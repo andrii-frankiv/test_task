@@ -52,6 +52,7 @@ export default class RestApiService extends Construct {
     const itemResource = rootResource.addResource(ITEM_RESOURCE);
     // itemResource.addMethod('ANY', new LambdaIntegration(this.handler));
     itemResource.addMethod('GET', new LambdaIntegration(this.handler));
+    itemResource.addMethod('DELETE', new LambdaIntegration(this.handler));
 
     // addCorsOptions(itemResource);
   }
