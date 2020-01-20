@@ -1,6 +1,6 @@
 import { IFunction } from '@aws-cdk/aws-lambda';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { LambdaIntegration, LambdaRestApi } from '@aws-cdk/aws-apigateway';
+import { LambdaIntegration, IResource, LambdaRestApi, MockIntegration, PassthroughBehavior } from '@aws-cdk/aws-apigateway';
 import { Construct } from '@aws-cdk/core';
 
 const LAMBDA_CONFIG = {
@@ -49,8 +49,41 @@ export default class RestApiService extends Construct {
     // create new item
     rootResource.addMethod('POST', new LambdaIntegration(this.handler));
 
+    addCorsOptions(rootResource)
+
 
     const itemResource = rootResource.addResource(ITEM_RESOURCE);
     itemResource.addMethod('ANY', new LambdaIntegration(this.handler));
+
+    addCorsOptions(itemResource);
   }
+}
+
+
+function addCorsOptions(apiResource: IResource) {
+  apiResource.addMethod('OPTIONS', new MockIntegration({
+    integrationResponses: [{
+      statusCode: '200',
+      responseParameters: {
+        'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        'method.response.header.Access-Control-Allow-Origin': "'*'",
+        'method.response.header.Access-Control-Allow-Credentials': "'false'",
+        'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE'",
+      },
+    }],
+    passthroughBehavior: PassthroughBehavior.NEVER,
+    requestTemplates: {
+      "application/json": "{\"statusCode\": 200}"
+    },
+  }), {
+    methodResponses: [{
+      statusCode: '200',
+      responseParameters: {
+        'method.response.header.Access-Control-Allow-Headers': true,
+        'method.response.header.Access-Control-Allow-Methods': true,
+        'method.response.header.Access-Control-Allow-Credentials': true,
+        'method.response.header.Access-Control-Allow-Origin': true,
+      },
+    }]
+  })
 }

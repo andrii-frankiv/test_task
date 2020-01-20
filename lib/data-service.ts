@@ -49,11 +49,12 @@ export default class DataService extends Construct implements IUserService {
     this.serviceHandler = new lambda.Function(this, `${TABLE_NAME}Handler`, {
       ...LAMBDA_CONFIG,
       environment: {
-        TABLE_NAME: table.tableName,
+        TABLE_NAME: "Animals",
         PRIMARY_KEY: KEY,
         DB_ACTION: 'DB_ACTION'
       }
     });
+
 
 
     table.grantReadWriteData(this.serviceHandler);

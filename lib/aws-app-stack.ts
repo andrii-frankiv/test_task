@@ -23,8 +23,6 @@ export class AwsAppStack extends cdk.Stack {
     [dataService, contentService]
       .forEach(service => service.grantInvokeServiceHandler(gatewayService.handler));
 
-    // dataService.grantInvokeServiceHandler(gatewayService.handler);
-    // contentService.grantInvokeServiceHandler(gatewayService.handler);
 
 
   }
