@@ -16,8 +16,9 @@ const
 ;
 
 
-interface IProps {
-  functionName: string
+interface IRestApiServiceProps {
+  dbHandlerName: string,
+  s3HandlerName: string
 }
 
 export default class RestApiService extends Construct {
@@ -25,10 +26,9 @@ export default class RestApiService extends Construct {
     return 'RestApi';
   }
 
-
   readonly handler: lambda.IFunction;
 
-  constructor(scope: Construct, id: string, props: IProps) {
+  constructor(scope: Construct, id: string, props: IRestApiServiceProps) {
     super(scope, id);
 
     const { serviceName } = RestApiService;
@@ -36,7 +36,8 @@ export default class RestApiService extends Construct {
     this.handler = new lambda.Function(this, `${serviceName}LambdaProxyHandler`, {
       ...LAMBDA_CONFIG,
       environment: {
-        DB_HANDLER: props.functionName
+        DB_HANDLER: props.dbHandlerName,
+        S3_HANDLER: props.s3HandlerName
       }
     });
 
@@ -49,7 +50,7 @@ export default class RestApiService extends Construct {
     rootResource.addMethod('POST', new LambdaIntegration(this.handler));
 
 
-    const userResource = rootResource.addResource(ITEM_RESOURCE);
-    userResource.addMethod('ANY', new LambdaIntegration(this.handler));
+    const itemResource = rootResource.addResource(ITEM_RESOURCE);
+    itemResource.addMethod('ANY', new LambdaIntegration(this.handler));
   }
 }

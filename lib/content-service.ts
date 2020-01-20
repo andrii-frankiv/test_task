@@ -1,28 +1,23 @@
 import { IFunction } from '@aws-cdk/aws-lambda';
 import { Construct } from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
 import { Table, AttributeType, TableProps } from '@aws-cdk/aws-dynamodb';
 
 
 const LAMBDA_CONFIG = {
   runtime: lambda.Runtime.NODEJS_10_X,
   code: new lambda.AssetCode('./lambda'),
-  handler: 'db.handler'
+  handler: 's3.handler'
 };
 
+const BUCKET_NAME = 'Content';
 
-const
-  KEY = 'ANIMAL_ID',
-  TABLE_NAME = 'Animals'
-;
+const BUCKET_CONFIG: BucketProps = {
 
-const TABLE_CONFIG = {
-  tableName: TABLE_NAME,
-  partitionKey: { name: KEY, type: AttributeType.STRING }
-};
+}
 
-
-interface IUserService {
+interface IAppService {
   readonly serviceHandler: IFunction
 
   grantInvokeServiceHandler(fn: IFunction): void
@@ -30,7 +25,7 @@ interface IUserService {
   readonly serviceHandlerName: string
 }
 
-export default class DataService extends Construct implements IUserService {
+export default class ContentService extends Construct implements IAppService {
   readonly serviceHandler: IFunction;
 
   public grantInvokeServiceHandler(fn: IFunction): void {
@@ -44,19 +39,17 @@ export default class DataService extends Construct implements IUserService {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    const table = new Table(this, `${TABLE_NAME}Table`, TABLE_CONFIG);
+    const bucket = new Bucket(this, `${BUCKET_NAME}Service`);
 
-    this.serviceHandler = new lambda.Function(this, `${TABLE_NAME}Handler`, {
+    this.serviceHandler = new lambda.Function(this, `${BUCKET_NAME}Handler`, {
       ...LAMBDA_CONFIG,
       environment: {
-        TABLE_NAME: table.tableName,
-        PRIMARY_KEY: KEY,
-        DB_ACTION: 'DB_ACTION'
+        BUCKET_NAME: bucket.bucketName,
+        S3_ACTION: 'S3_ACTION'
       }
     });
 
-
-    table.grantReadWriteData(this.serviceHandler);
+    bucket.grantReadWrite(this.serviceHandler);
   }
 }
 

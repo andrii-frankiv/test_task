@@ -24,6 +24,7 @@
     "@aws-cdk/aws-apigateway": "^1.21.1",
     "@aws-cdk/aws-dynamodb": "^1.21.1",
     "@aws-cdk/aws-lambda": "^1.21.1",
+    "@aws-cdk/aws-s3": "^1.21.1",
     "@aws-cdk/core": "^1.21.1",
     "@types/uuid": "^3.4.6",
     "aws-sdk": "^2.606.0",
