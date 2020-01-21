@@ -57,7 +57,7 @@ function deleteItem(id) {
   return lambda
     .invoke({
       FunctionName: process.env.DB_HANDLER,
-      Payload: JSON.stringify({ "DB_ACTION": "get", "Key": { "ANIMAL_ID": id }}),
+      Payload: JSON.stringify({ "DB_ACTION": "delete", "Key": { "ANIMAL_ID": id }}),
     })
     .promise();
 }
